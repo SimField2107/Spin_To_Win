@@ -8,7 +8,9 @@
     <title>Spin To Win </title>
 
     <Style>  
-
+            *{
+                box-sizing: border-box;
+            }
 
         body, html{
                 font-family: 'Montserrat';
@@ -17,6 +19,9 @@
                 background: #3998A4;
                 margin: 0;
                 padding: 0;
+                font-weight: 200;
+                font-size: 20px;
+                line-height: 1.7;
                
             }
     
@@ -71,6 +76,52 @@
                 color: #FFFFFF;
                 max-height: 400px; 
                 max-width: 100%;
+            }
+
+
+            .form{
+                text-align: center;
+                color: #FFFFFF;
+                margin: auto;
+                width: 100%;
+                max-width: 900px;
+            }
+
+            .form__input-container{
+                display: flex;
+                flex-wrap: wrap;
+                gap: 30px;
+                padding: 20px;
+            }
+
+
+            .form__input{
+                display:flex;
+                flex-direction: column;
+                margin-left: auto;
+                position: relative;
+                flex: 48%;
+                max-width: 48%;
+            }
+
+            .form__input input{
+                font-family: inherit;
+                border: 1px solid rgba(255, 255, 255, 0);
+                padding-left: 5px;
+                height: 38px;
+                transition: 0.2s;
+            }
+            .form__input input:focus{
+                outline: none;
+                border: 1px solid #ee6a45;
+                box-shadow: 0 0 4px #ee6a45;
+            }
+
+            .form__input label{
+                text-align: left;
+                position: relative;
+                font-size: 16px;
+                line-height: 2;
             }
     
 
@@ -145,6 +196,19 @@
 
 
 
+    <form class="form">
+        <div class="form__input-container"></div>
+        <div class="form__submit">
+            <img class="form__submit-btn-sparkles" src="images/submit-sparkles.png" />
+            <button class="form__submit-btn" type="submit">
+                Submit
+            </button>
+        </div>
+    </form>
+
+
+
+
     <div class="footer">
         <div class="footer__copyright">© 2023 TJX ®</div>
         <a href="#" class="footer__link">FAQs</a>
@@ -155,9 +219,102 @@
 
 
 
+    <script>
 
 
+    let form = document.querySelector('.form__input-container');
+    let inputs = [
+        {
+            label: 'First name*',
+            info: 'You have a name, right?',
+            validation: (v) => true
+        },
+        {
+            label: 'Address line 1*',
+            info: 'The first line of your address',
+            validation: (v) => true
+        },
+        {
+            label: 'Last name*',
+            info: 'Or a pseudo lastname will do just as fine',
+            validation: (v) => true
+        },
+        {
+            label: 'Adress line 2',
+            info: 'The second line of your address',
+            validation: (v) => true
+        },
+        {
+            label: 'Email address*',
+            info: 'Enter a valid email address',
+            placeholder: 'example@example.com',
+            validation: (v) => {
+                return v
+                    .toLowerCase()
+                    .match(/^\S+@\S+\.\S+$/)
+            }
+        },
+        {
+            label: 'Town*',
+            info: 'The town your located within',
+            validation: (v) => true
+        },
+        {
+            label: 'Confirm email address*',
+            info: 'Re-enter your email address',
+            placeholder: 'example@example.com',
+            validation: (v) => {
+                return document.getElementById('4')?.value == v
+            }
+        },
+        {
+            label: 'County*',
+            info: 'This is where you live',
+            validation: (v) => true
+        },
+        {
+            label: 'Postcode*',
+            info: 'This is where you live',
+            validation: (v) => true
+        }
+    ]
 
+
+    form.insertAdjacentHTML('afterbegin', inputs.map((x, i) => `
+                <div class="form__input" id="${i}">
+                    <label>
+                        ${x.label}
+                        <div class="help-icon">
+                            <div>?</div>
+                            <div class="help-icon__info">
+                                ${x.info}
+                            </div>
+                        </div>
+                    </label>
+
+                    <input type="text" onkeydown="validate(this, ${i})" placeholder="${x.placeholder || ''}"/>
+
+                    <div class="form__input-validation-msg">
+                        ${x.info}
+                    </div>
+                </div>
+            `).join(''))
+
+            function validate(input, id){
+                if (inputs[id]?.validate) return
+
+                let el = document.getElementById(`${id}`);
+
+                if (inputs[id].validation(input.value)){
+                    el.classList.remove('error');
+                } else {
+                    el.classList.add('error')
+                }
+            }
+
+        
+
+    </script> 
 
 
 
